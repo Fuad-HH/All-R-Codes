@@ -45,24 +45,31 @@ map_ch <- ggplot() + geom_polygon(data = chittagong, aes(x = long, y = lat, grou
 map_dh <- ggplot() + geom_polygon(data = dhaka, aes(x = long, y = lat, group = group), colour = "black", fill = NA)
 
 # Dhaka Map plot
-map_dh + geom_point(data = collected_data[6:14,], aes(x = Lat, y = Long), color="red") + theme_minimal() + 
+map_dh + geom_point(data = collected_data[6:14,], aes(x = Lat, y = Long), color="red", shape=24) + theme_minimal() + 
   xlab("Longitude") + ylab("Latitude") + coord_fixed()
 
 # Chittagong Map PLot
-map_ch + geom_point(data = collected_data[1:5,], aes(x = Lat, y = Long), color="red") + theme_minimal() +
+map_ch + geom_point(data = collected_data[1:5,], aes(x = Lat, y = Long), color="red", shape=24) + theme_minimal() +
   xlab("Longitude") + ylab("Latitude") + coord_fixed()
 
+# dh_nj or chittagong
 shp_df <- broom::tidy(chittagong, region = "ADM3_EN")
 lapply(shp_df, class)
 cnames <- aggregate(cbind(long, lat) ~ id, data=shp_df, FUN=mean)
 
-map_dh + geom_point(data = collected_data[6:14,], aes(x = Lat, y = Long), color="red") + 
+map_dh + 
+  geom_point(data = collected_data[6:14,], aes(x = Lat, y = Long), color="red", shape=24, fill="red", color="darkred", size=3) + 
   theme_minimal() + xlab("Longitude") + ylab("Latitude") + coord_fixed() +
-  geom_text_repel(data = cnames, aes(x = long, y = lat, label = id), size = 3, color="black") +
+  geom_text_repel(data = cnames, aes(x=long, y=lat, label=id), size=3, color="black", family="sans serif",
+                  max.overlaps=7
+                  ) +
   coord_sf(xlim = c(90.3, 90.55), ylim = c(23.55, 23.95), expand = FALSE)
 
-map_ch + geom_point(data = collected_data[1:5,], aes(x = Lat, y = Long), color="red") + 
+map_ch + 
+  geom_point(data = collected_data[1:15,], aes(x = Lat, y = Long), color="red", shape=24, fill="red", color="darkred", size=3) + 
   theme_minimal() + xlab("Longitude") + ylab("Latitude") + coord_fixed() +
-  geom_text_repel(data = cnames, aes(x = long, y = lat, label = id), size = 3, color="black") +
-  coord_sf(xlim = c(91.7, 92), ylim = c(22.20, 22.40), expand = FALSE) +
+  geom_text_repel(data = cnames, aes(x=long, y=lat, label=id), size=3, color="black", family="sans serif",
+                  max.overlaps=7
+  ) +
+  coord_sf(xlim = c(91.7, 92), ylim = c(22.20, 22.40), expand = FALSE)
   
